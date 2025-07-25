@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: link-shortener-server
+    env: java
+    buildCommand: ./mvnw clean package -DskipTests
+    startCommand: java -jar target/*.jar
+    plan: free
+    envVars:
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://rakeshsagar89.github.io/ProjectLink/
