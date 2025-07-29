@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,11 +20,13 @@ public class UrlShortenerController {
     private UrlShortenerService service;
 
     @PostMapping("/shorten")
-    public ResponseEntity<String> shorten(@RequestBody Map<String, String> request) {
+    public ResponseEntity<String> shorten(@RequestBody Map<String, String> request, HttpServletRequest servletRequest) {
         try {
             String url = request.get("originalUrl");
             String shortCode = service.shortenUrl(url);
-            return ResponseEntity.ok("http://localhost:7070/" + shortCode);
+            // Get base URL from the request
+            String baseUrl = servletRequest.getRequestURL().toString().replace(servletRequest.getRequestURI(), "");
+            return ResponseEntity.ok(baseUrl + "/" + shortCode);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("Invalid URL format");
         }
