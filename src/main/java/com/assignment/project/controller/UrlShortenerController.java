@@ -47,4 +47,9 @@ public class UrlShortenerController {
                 return new ResponseEntity<>(headers, HttpStatus.FOUND);
         }
     }
+
+    @GetMapping("/health")
+    public ResponseEntity<String> healthCheck() {
+        return ResponseEntity.ok("OK");
+    }
 }
